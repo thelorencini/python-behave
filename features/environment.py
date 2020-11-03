@@ -1,13 +1,21 @@
 import os
-
+import platform
 from selenium import webdriver
-from webdriver_manager.chrome import ChromeDriverManager
+
+
 
 
 
 def before_all(context):
     ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    context.driver = webdriver.Chrome(ROOT_DIR + "/chromedriver")
+    if("Linux" in platform.platform()):
+        system_file = "/chromedriver_linux"
+    elif("Windows" in platform.platform()):
+        system_file = "/chromedriver_windows.exe"
+    else:
+        raise Exception('Sistema não identificado')
+
+    context.driver = webdriver.Chrome(ROOT_DIR + system_file)
 
 
 def before_scenario(context, scenario):
